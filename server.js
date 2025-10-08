@@ -12,7 +12,17 @@ const peerServer = ExpressPeerServer(server, {
 
 app.use("/peerjs", peerServer);
 
+// Optional: handle root route to avoid "Cannot GET /"
+app.get("/", (req, res) => {
+  res.send("✅ PeerJS server is running!");
+});
+
+// Listen for peer connections
+peerServer.on("connection", (client) => {
+  console.log(`Client connected: ${client.id}`);
+});
+
 const PORT = process.env.PORT || 9000;
 server.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+  console.log(`Server is listening on port ${PORT}`);
 });
